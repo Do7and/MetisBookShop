@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/jquery-3.6.0.min.js"></script>
+<title>注册</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body> 
+<div class="content" align="center"> <!--头部--> 
+<div class="header"> <h1>注册页面</h1> </div> <!--中部--> 
+<div class="middle"> 
+<form id="login_value"> <table border="0"> 
+
+<!--from wys:the code registeraction is also for connection with the mysql.the original will be sent to you for reference.-->
+
+<tr>
+    <td>用户名：</td><td><input type="text" id="name" name="name" required="required"></td> 
+</tr>
+
+<tr>
+    <td>密   码：</td><td><input type="password" id="password" name="password" required="required"></td> 
+</tr>
+
+<tr>
+    <td>重复密码：</td><td><input type="password" id="confirm" name="confirm" required="required"></td>
+</tr>
+
+<tr>
+    <td>收货地址：</td><td><input type="text" id="address" name="address" required="required"></td>
+</tr>
+
+<tr>
+    <td>联系电话：</td> <td><input type="text" id="tele" name="tele" required="required"></td>
+</tr>
+
+<tr> 
+    <td>电子邮箱：</td> <td><input type="email" id="email" name="email" required="required"></td>
+</tr>
+
+<!--the following code is for testing the input information.In fact,for our project,we allowed same username,since the 
+user ids are identity.so you may check the code in  file registeraction and remove the first case.-->
+
+<tr>
+    <td colspan="2" align="center"> 
+        <input type="button" id="register" name="register" value="注册" onclick="postregister()">
+        <input type="reset" id="reset" name="reset" value="重置">
+    </td>
+</tr> 
+
+<tr>
+    <td colspan="2" align="center"> 
+        如果已有账号，快去<a href="index.html">登录</a>吧！ </td>
+    </tr>
+</table>
+</form>
+</div> 
+</body>
+<script type="text/javascript">
+function postregister(){
+$.ajax({
+method:"post",
+data:$('#login_value').serialize(),//jq提供的获取form表单数据的快捷方式，通过form内标签的name属性{"username":"admin","passwd":"123456"}
+url:"php/postregister.php",
+success:function(data){//请求数据并返回结果给success,是一个对象，类似python的字典。回调函数。data只是一个函数的参数，跟上面的data不一样
+ console.log("success!!");
+ console.log(data);
+  console.log(typeof(data));
+	document.write(data);
+ },
+error:function(err){
+console.log("elohasan");
+		console.log(err);
+		}
+})
+}
+</script>
+</html>

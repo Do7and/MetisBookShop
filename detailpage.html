@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>detailpage</title>
+		<script src="js/jquery-3.6.0.min.js"></script>
+    </head>
+
+     <div align="center">
+       <h2 id="name">bookname</h2>
+    </div>
+    <div align="center">
+        <table border="1" width="500px" align="center">
+            <tr>
+                <td rowspan="5" height="400px" width="300px">
+                    <div class="cover" ></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>作者：</p> 
+					<div id="author"></div>
+					
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>译者：</p>
+					<div id="translator"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>出版社：</p> 
+					<div id="press"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>出版时间：</p> 
+					<div id="time"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>价格：</p>
+					<div id="price"></div>
+                </td>
+                <td>
+                    <p>评分：</p> 
+					<div id="rating"></div>
+                </td>
+                <td>
+					<input type="text" id="number" name="number" placeholder="购买数量,默认为1本"  oninput="value=value.replace(/[^\d]/g,'')">
+                    <input type="button" id="buy" name="buy" value="购买" >
+                </td>
+            </tr>
+        </table>
+            <tr>
+                <h4>简介</h4>
+            </tr>
+            <tr>
+               <div id="introduction"></div>
+            </tr>
+       
+    </div>
+    <div align="center">
+     <table border="0">
+	<tr>
+                <td width="150px">
+                    <p>你会为本书打几分</p>
+                </td>
+                <td>
+                    <select id="thisrating" name="thisrating">
+                            <option value="1">1分</option>
+                            <option value="2">2分</option>
+                            <option value="3">3分</option>
+                            <option value="4">4分</option>
+                            <option value="5">5分</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <p>快来评价一下这本书吧</p>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="review" name="review" size="100" placeholder="在这里留下你的评论">
+                </td>
+                <td>
+                    <input type="button" id="submitcomment" name="submitcomment" value="提交评价" >
+                </td>
+            </tr>
+        
+            
+        </table>
+
+    </div>
+    <div align="center">
+        <tr>
+            <p>评论</p>
+        </tr>
+        <tr>
+            <div class="review"></div>
+        </tr>
+    </div>
+    </body>
+<script type="text/javascript">
+var params = location.search;
+var bookid = "";
+var userid = "";
+if (params.indexOf("?") != -1) {
+var str = params.substr(1);
+strs = str.split("&");
+bookid = unescape(strs[0].split("=")[1]);
+userid = unescape(strs[1].split("=")[1]);
+}
+</script>
+
+<script type="text/javascript">
+$.ajax({
+		type:"POST",
+		url:'php/getdetail.php',
+		data:JSON.stringify({
+		bookid:bookid,
+		userid:userid
+		}),
+		dataType:"json",
+		cache:true,
+		success:function(data){
+		console.log(data)
+		var imgstr="<img src="+data.cover+" height='400px' width='300px'>";
+		$(".cover").html(imgstr);
+		document.getElementById("author").innerHTML = data.author;
+		document.getElementById("name").innerHTML = data.name;
+		document.getElementById("translator").innerHTML = data.translator;
+		document.getElementById("press").innerHTML = data.press;
+		document.getElementById("price").innerHTML = data.price;
+		var price = data.price
+		document.getElementById("rating").innerHTML = data.rating;
+		document.getElementById("introduction").innerHTML = data.introduction;
+		document.getElementById("time").innerHTML = data.time;
+		var reviewstr = "<table border='1' width='90%'>";
+		$.each(data.review, function(idx, val) 
+			{
+				reviewstr += "<tr><td><p>"+val+
+				"</p></td></tr>" ;
+				
+			});
+		reviewstr += "</table>";
+		$(".review").html(reviewstr);
+		},
+		error:function(err){
+		alert("elohasan");
+		}
+	});
+
+  </script>
+<script type="text/javascript">
+$number = $('input[name="number"]').val();
+
+if($number==""){
+	$number="1";}
+ $('#buy').click(function (){
+ $.ajax({
+		type:"POST",
+		url:'php/addshop.php',
+		data:JSON.stringify({
+		bookid:bookid,
+		userid:userid,
+		price:price,
+		number:$number
+		}),
+		dataType:"text",
+		cache:true,
+		success:function(data){
+		console.log(data)
+		alert("成功加入购物车！");
+		},
+		error:function(err){
+		alert("elohasan");
+		}
+	});
+ console.log("bbbuy")
+ });
+ </script>
+
+ <script type="text/javascript">
+ $review = $('input[name="review"]').val();
+var myselect=document.getElementById("thisrating");
+var index=myselect.selectedIndex ;
+$rating = myselect.options[index].value
+ $('#submitcomment').click(function (){
+ console.log("submitcomment")
+ $.ajax({
+		type:"POST",
+		url:'php/postreview.php',
+		data:JSON.stringify({
+		bookid:bookid,
+		userid:userid,
+		rating:$rating,
+		review:$review
+		}),
+		dataType:"text",
+		cache:true,
+		success:function(data){
+		console.log(data)
+		document.write(data);
+		},
+		error:function(err){
+		alert("elohasan");
+		}
+	});
+ 
+ })
+ </script>
+</html>

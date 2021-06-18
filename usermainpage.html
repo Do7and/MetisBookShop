@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>mainpage</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script src="js/jquery-3.6.0.min.js"></script>
+    </head>
+
+    <body>
+	
+        <div class="title" align="center"><!--the title for this page-->
+            <h1>欢迎来到智慧女神网上书店</h1>
+        </div>
+
+        <div class="columns" align="center"><!--the columns for customer to enter other pages.-->
+            <tr>
+                <td style="width:500px" align='center'>
+                    <a href="shoppingcart.html">购物车</a>
+                </td>
+                <td style="width:500px" align='center'>
+                    <a href="orderform.html">订单</a>
+                </td>
+                <td style="width:500px" align='center'>
+                    <a href="customerhomepage.html">我的</a>
+                </td>
+                <!--from wys:the supporting htmls here are not finished now.--> 
+            </tr>
+        </div>
+
+        <div class="searchbox" align="center">
+                <table>
+                    <tr style="height:30px" align='center'>
+                        <td>
+                            <p>请输入搜索内容：</p>
+                        </td>
+                        <td style="width:400px">
+                            <input type='text' id="searchrequire" name="searchrequire" required="required" size="70">
+                        </td>
+                        <td>
+                            <select required="required" id='area' name="area">
+                                <option value="bookname">书名</option>
+                                <option value="writer">作者</option>
+                                <option value="press">出版社</option>
+                                <option value="category">类别</option>
+                            </select>
+                        </td>
+                        <td>
+                            <!--the submit button.the customer submit there search requirement by clicking this button.-->
+                            <input type="button" id="search" name="search" value='搜索'>
+                        </td>
+                    </tr>
+
+                </table>
+				<tr style="height:30px" align='center'>
+<div class="searchresult"></div>
+                    </tr>
+        </div>
+
+<div>
+<div  align='center'><h2>BEST SELLER</h2></div>
+<div class="bestseller" align='center'></div>
+</div>
+
+    </body>
+	<script type="text/javascript">
+	var params = location.search;
+var userid = "";
+if (params.indexOf("?") != -1) {
+userid = unescape(params.split("=")[1]);
+};
+console.log(userid);
+</script>
+	<script type="text/javascript">
+
+	$.ajax({
+		type:"POST",
+		url:'php/getbestseller.php',
+		data:{},
+		dataType:"json",
+		cache:true,
+		success:function(data){
+		console.log(data)
+		var str = "";
+		$.each(data, function(idx, val) 
+			{
+				str += "<table border='1' width='90%'><tr>"+
+				"<td rowspan='4' width='150px'>"+"<img src=img/"+val.img+" height='200px' width='150px'>"+"</td>" +
+					"<td>"+
+						"<table border='1'>"+
+						"<tr>"+"<p>标题："+val.title+"</p>"+"</tr>"+
+						"<tr>"+"<p>作者："+val.author+"</p>"+"</tr>"+
+						"<tr>"+"<p>价格：￥"+val.price+"</p>"+"</tr>"+
+						"<tr>"+"<input type='button' name='submit' value='详情' onclick=\"window.open('detailpage.html?bookid="+val.bookid+"&"+"userid="+userid+"')\">"+"</tr>"+
+						"</table>"+
+					"</td>"+
+				"</tr></table>" ;
+				
+			});
+		str += "";
+		$(".bestseller").html(str);
+		},
+		error:function(err){
+		alert("elohasan");
+		}
+		
+	});
+	</script>
+
+<script type="text/javascript">
+$('#search').click(function (){
+console.log(userid);
+		var myselect=document.getElementById("area");
+	var index=myselect.selectedIndex ;
+	$searcharea = myselect.options[index].value;
+$searchrequire = $('input[name="searchrequire"]').val();
+console.log($searchrequire)
+	$.ajax({
+		type:"POST",
+		url:'php/getsearch.php',
+		data:JSON.stringify({
+		searchrequire:$searchrequire,
+		searcharea:$searcharea
+		}),
+		dataType:"json",
+		cache:true,
+		success:function(data){
+		console.log(data)
+		var str = "";
+		$.each(data, function(idx, val) 
+			{
+				str += "<table border='1' width='90%'><tr>"+
+				"<td rowspan='4' width='150px'>"+"<img src=img/"+val.img+" height='200px' width='150px'>"+"</td>" +
+					"<td>"+
+						"<table border='1'>"+
+						"<tr>"+"<p>标题："+val.title+"</p>"+"</tr>"+
+						"<tr>"+"<p>作者："+val.author+"</p>"+"</tr>"+
+						"<tr>"+"<p>价格：￥"+val.price+"</p>"+"</tr>"+
+						"<tr>"+"<input type='button' name='submit' value='详情' onclick=\"window.open('detailpage.html?bookid="+val.bookid+"&"+"userid="+userid+"')\">"+"</tr>"+
+						"</table>"+
+					"</td>"+
+				"</tr></table>" ;
+				
+			});
+		str += "";
+		console.log(str);
+		$(".searchresult").html(str);
+		},
+		error:function(err){
+		alert("elohasan");
+		}
+	});
+});
+		
+	</script>
+ <!--
+<script language=javascript>
+function open(){
+if(!document.form_name.username.value) {
+alert("请输入用户名！"); document.form_name.username.focus(); return false;
+}else document.form_name.action="detailpage.html";
+}
+</script>
+
+UUUUUUUSeFUL
+var params = location.search;
+var userid = “”;
+var vs_userName = “”;
+if (params.indexOf(“?”) != -1) {
+var str = params.substr(1);
+strs = str.split(“&”);
+userid = unescape(strs[0].split(“=”)[1]);
+vs_userName = unescape(strs[1].split(“=”)[1]);
+}
+
+-->
+</html>

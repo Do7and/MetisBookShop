@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>detailpage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <div align="center">
+       <h2>bookname</h2>
+    </div>
+    <div align="center">
+        <table border="1" width="500px" align="center">
+            <tr>
+                <td rowspan="5" height="200px" width="150px">
+                    coverimg
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>作者：</p> author
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>译者：</p>translator
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>出版社：</p> press
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>出版时间：</p> time
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>价格：</p> price
+                </td>
+                <td>
+                    <p>评分：</p> rating
+                </td>
+                <td>
+                    <input type="button" name="购买" value="购买">
+                </td>
+            </tr>
+        </table>
+            <tr>
+                <h4>简介</h4>
+            </tr>
+            <tr>
+                <p>introduction</p> 
+            </tr>
+       
+    </div>
+    <div align="center">
+        
+            <tr>
+                <p>快来写一条书评吧！</p>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="review" name="review" size="100">
+                </td>
+                <td>
+                    <input type="button" name="提交" value="提交">
+                </td>
+            </tr>
+        
+        <table>
+            <tr>
+                <td width="150px">
+                    <p>你会为本书打几分</p>
+                </td>
+                <td>
+                    <select id="rating" name="rating">
+                            <option value="1">1分</option>
+                            <option value="2">2分</option>
+                            <option value="3">3分</option>
+                            <option value="4">4分</option>
+                            <option value="5">5分</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div align="center">
+        <tr>
+            <p>评论</p>
+        </tr>
+        <tr>
+            reviews
+        </tr>
+    </div>
+</body>
+</html>
